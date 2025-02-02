@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}収支一覧{% endblock %} {% block
+content %}
+<h1>📜 収支一覧</h1>
+
+<!-- フィルターボタン -->
+<div class="btn-group mb-3">
+  <a
+    href="?sort={{ sort }}&order={{ order }}&type=all"
+    class="btn btn-secondary {% if filter_type == 'all' %}active{% endif %}"
+    >すべて</a
+  >
+  <a
+    href="?sort={{ sort }}&order={{ order }}&type=income"
+    class="btn btn-success {% if filter_type == 'income' %}active{% endif %}"
+    >💰 収入のみ</a
+  >
+  <a
+    href="?sort={{ sort }}&order={{ order }}&type=expense"
+    class="btn btn-danger {% if filter_type == 'expense' %}active{% endif %}"
+    >💸 支出のみ</a
+  >
+</div>
+
+<!-- 合計表示 -->
+<div class="alert alert-info">
+  💰 収入合計: <strong>{{ total_income }}</strong> 円 | 💸 支出合計:
+  <strong>{{ total_expense }}</strong> 円
+</div>
+
+<!-- テーブル -->
+<table class="table table-striped table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>
+        <a
+          href="?sort=date&order={% if sort == 'date' and order == 'asc' %}desc{% else %}asc{% endif %}&type={{ filter_type }}"
+          class="text-white"
+          >📅 日付</a
+        >
+      </th>
+      <th>カテゴリ</th>
+      <th>
+        <a
+          href="?sort=amount&order={% if sort == 'amount' and order == 'asc' %}desc{% else %}asc{% endif %}&type={{ filter_type }}"
+          class="text-white"
+          >💰 金額</a
+        >
+      </th>
+      <th>種別</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in transactions %}
+    <tr>
+      <td>{{ t.date }}</td>
+      <td>{{ t.category }}</td>
+      <td>{{ t.amount }}</td>
+      <td
+        class="{% if t.type == 'income' %}text-success{% else %}text-danger{% endif %}"
+      >
+        {{ "収入" if t.type == "income" else "支出" }}
+      </td>
+      <td>
+        <a href="/edit/{{ t.id }}" class="btn btn-warning btn-sm">✏️ 編集</a>
+        <a href="/delete/{{ t.id }}" class="btn btn-danger btn-sm">🗑 削除</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

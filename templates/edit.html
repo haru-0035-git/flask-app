@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}収支編集{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>✏️ 収支を編集</h1>
+    <form action="/edit/{{ transaction.id }}" method="post">
+        <div class="mb-3">
+            <label class="form-label">日付</label>
+            <input type="date" name="date" class="form-control" value="{{ transaction.date }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">カテゴリ</label>
+            <input type="text" name="category" class="form-control" value="{{ transaction.category }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">金額</label>
+            <input type="number" name="amount" class="form-control" value="{{ transaction.amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">種別</label>
+            <select name="type" class="form-select">
+                <option value="income" {% if transaction.type == "income" %}selected{% endif %}>収入</option>
+                <option value="expense" {% if transaction.type == "expense" %}selected{% endif %}>支出</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">更新</button>
+    </form>
+</div>
+{% endblock %}

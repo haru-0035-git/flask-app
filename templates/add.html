@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block title %}収支登録{% endblock %} {% block
+content %}
+<div class="card">
+  <h1>💰 収支を登録</h1>
+  <form action="/add" method="post">
+    <div class="mb-3">
+      <label class="form-label">日付</label>
+      <input type="date" name="date" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">カテゴリ</label>
+      <select name="category" class="form-select">
+        <option value="食費">食費</option>
+        <option value="交通費">交通費</option>
+        <option value="娯楽">娯楽</option>
+        <option value="給料">給料</option>
+        <option value="その他">その他</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">金額</label>
+      <input type="number" name="amount" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">種別</label>
+      <select name="type" class="form-select">
+        <option value="income">収入</option>
+        <option value="expense">支出</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">追加</button>
+  </form>
+</div>
+{% endblock %}
