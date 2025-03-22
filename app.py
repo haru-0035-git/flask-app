@@ -1,6 +1,8 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from xhtml2pdf import pisa  # PDF生成用ライブラリ
+from io import BytesIO  # メモリ内でPDFを生成するために使用
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kakeibo.db'
@@ -65,7 +67,30 @@ def list_transactions():
         filter_type=filter_type
     )
 
+# 📄 家計簿をPDFとして保存
+@app.route('/export/pdf')
+def export_pdf():
+    transactions = Transaction.query.order_by(Transaction.date.desc()).all()
+    total_income = sum(t.amount for t in transactions if t.type == 'income')
+    total_expense = sum(t.amount for t in transactions if t.type == 'expense')
 
+    # HTMLテンプレートをPDFに変換
+    rendered_html = render_template(
+        'export_pdf.html',
+        transactions=transactions,
+        total_income=total_income,
+        total_expense=total_expense
+    )
+    pdf = BytesIO()
+    pisa_status = pisa.CreatePDF(rendered_html.encode('utf-8'), pdf)  # UTF-8でエンコード
+
+    if pisa_status.err:
+        return "PDF生成中にエラーが発生しました", 500
+
+    pdf.seek(0)
+    return Response(pdf, mimetype='application/pdf', headers={
+        "Content-Disposition": "attachment;filename=kakeibo.pdf"
+    })
 
 # ✏️ 収支の編集ページ
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])

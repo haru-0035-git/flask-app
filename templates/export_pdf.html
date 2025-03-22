@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>家計簿 PDF</title>
+    <style>
+      @font-face {
+        font-family: "IPAexGothic";
+        src: url("/path/to/ipaexg.ttf") format("truetype"); /* フォントファイルのパスを指定 */
+      }
+      body {
+        font-family: "IPAexGothic", Arial, sans-serif;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .summary {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>家計簿</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>カテゴリ</th>
+          <th>金額</th>
+          <th>タイプ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction in transactions %}
+        <tr>
+          <td>{{ transaction.date }}</td>
+          <td>{{ transaction.category }}</td>
+          <td>{{ transaction.amount }}</td>
+          <td>{{ transaction.type }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="summary">
+      <p><strong>総収入:</strong> {{ total_income }} 円</p>
+      <p><strong>総支出:</strong> {{ total_expense }} 円</p>
+    </div>
+  </body>
+</html>
