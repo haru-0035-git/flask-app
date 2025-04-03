@@ -22,9 +22,11 @@ content %}
 </div>
 
 <!-- 合計表示 -->
+
 <div class="alert alert-info">
   💰 収入合計: <strong>{{ total_income }}</strong> 円 | 💸 支出合計:
-  <strong>{{ total_expense }}</strong> 円
+  <strong>{{ total_expense }}</strong> 円 | 💵 残高:
+  <strong>{{ balance }}</strong> 円
 </div>
 
 <!-- テーブル -->
@@ -69,4 +71,12 @@ content %}
     {% endfor %}
   </tbody>
 </table>
-{% endblock %}
+
+<!-- テーブルの下に合計を再表示 -->
+<div class="alert alert-secondary mt-3">
+  <h4>収支の合計</h4>
+  <p>💰 収入合計: <strong>{{ total_income }}</strong> 円</p>
+  <p>💸 支出合計: <strong>{{ total_expense }}</strong> 円</p>
+  <p>💵 残高: <strong>{{ balance }}</strong> 円</p>
+</div>
+{% endblock %} {% endblock %}

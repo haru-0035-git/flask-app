@@ -56,12 +56,14 @@ def list_transactions():
 
     total_income = sum(t.amount for t in transactions if t.type == 'income')
     total_expense = sum(t.amount for t in transactions if t.type == 'expense')
+    balance = total_income - total_expense  # 残高を計算
 
     return render_template(
         'list.html',
         transactions=transactions,
         total_income=total_income,
         total_expense=total_expense,
+        balance=balance,  # 残高をテンプレートに渡す
         sort=sort,
         order=order,
         filter_type=filter_type
